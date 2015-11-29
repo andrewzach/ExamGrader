@@ -1,7 +1,9 @@
+import java.io.Serializable;
+
 /**
  * Created by Andrew on 11/9/2015.
  */
-public class ExamKey
+public class ExamKey implements Serializable
 {
     private String examName;
     private int[] answers;

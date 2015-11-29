@@ -1,25 +1,27 @@
-/**
- * Created by Andrew on 11/9/2015.
- */
+// DT265 - OOSD2 Java Project
+// By Andrew Zacharias - D14127051
+// 23 / 11 / 2015
 
 import java.util.*;
+import java.io.*;
 
-public class Exam
+public class Exam implements Serializable
 {
     private String name;
     private double penalty;
     private ExamKey key;
-    private ArrayList<StudentExam> studentAnswers;
+    private List<StudentExam> studentAnswers;
 
     public Exam(String name, double penalty)
     {
         this.name = name;
         this.penalty = penalty;
-        studentAnswers = new ArrayList<StudentExam>();
+        studentAnswers = new ArrayList<>();
     }
 
     public Exam(String name)
     {
+        // Default penalty for incorrect answers is -0.25 points
         this(name, 0.25);
     }
 
@@ -34,12 +36,18 @@ public class Exam
         return name;
     }
 
-    public void addStudentAnswers(ArrayList<StudentExam> answers)
+    public void addStudentAnswers(List<StudentExam> answers)
     {
-        studentAnswers.addAll(answers);
+        // Check to make sure StudentExams aren't already in studentAnswers before adding them.
+        for (StudentExam se : answers)
+        {
+            if (!studentAnswers.contains(se)) {
+                studentAnswers.add(se);
+            }
+        }
     }
 
-    public ArrayList<StudentExam> getStudentAnswers()
+    public List<StudentExam> getStudentAnswers()
     {
         return studentAnswers;
     }
@@ -59,15 +67,57 @@ public class Exam
         this.key = key;
     }
 
-    public void markStudentAnswers()
+    public void removeStudent(Student s)
     {
-        for (StudentExam s : studentAnswers)
+        // Use list iterator to safely remove StudentExams belonging to Student s.
+        for (Iterator<StudentExam> iterator = studentAnswers.iterator(); iterator.hasNext();)
         {
-            double mark = calcGrade(s);
-            s.setMark(mark);
+            StudentExam se = iterator.next();
+            if (se.getStudent() == s)
+            {
+                iterator.remove();
+            }
         }
     }
 
+    public int length()
+    {
+        if (key != null) {
+            return key.getAnswers().length;
+        }
+        else
+        {
+            return 0;
+        }
+    }
+
+    // Calculate and store mark for all StudentExams
+    public void markAllStudentAnswers()
+    {
+        if (key != null)
+        {
+            for (StudentExam s : studentAnswers) {
+                double mark = calcGrade(s);
+                s.setMark(mark);
+            }
+        }
+    }
+
+    // Calculate and store mark for selected StudentExams
+    public void markStudentAnswers(List<StudentExam> newAnswers)
+    {
+        if (key != null)
+        {
+            for (StudentExam s : newAnswers) {
+                double mark = calcGrade(s);
+                s.setMark(mark);
+            }
+        }
+    }
+
+    // Calculates grade for StudentExam. Gives 1 point for correct answers, subtracts penalty for incorrect
+    // No change for blank answers. Final grade is rounded up to nearest whole number.
+    // Return -1 if error marking exam.
     private double calcGrade(StudentExam s)
     {
         int[] sAnswers = s.getAnswers();
@@ -75,7 +125,7 @@ public class Exam
         double grade = 0;
         if (sAnswers.length != kAnswers.length)
         {
-            return -1; // Exam lengths don't match
+            return StudentExam.MARKING_ERROR; // Exam lengths don't match
         }
         else
         {
@@ -90,7 +140,13 @@ public class Exam
                     grade -= penalty;
                 }
             }
+            if (grade < 0) { grade = 0; } // Don't allow negative grades
         }
-        return grade;
+        return Math.ceil(grade);
+    }
+
+    public String toString()
+    {
+        return String.format("%-15s %-10d %-10d", name, length(), studentAnswers.size());
     }
 }

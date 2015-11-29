@@ -1,9 +1,11 @@
-import java.util.ArrayList;
+// DT265 - OOSD2 Java Project
+// By Andrew Zacharias - D14127051
+// 23 / 11 / 2015
 
-/**
- * Created by Andrew on 11/9/2015.
- */
-public class ConsoleUI
+import java.util.List;
+
+// Used to test model before developing GUI. No longer used.
+class ConsoleUI
 {
     private static MainController mc;
 
@@ -15,8 +17,8 @@ public class ConsoleUI
         testExam.addStudentAnswers(mc.loadStudentExams("D:\\Input\\StudentAnswers2.dat", testExam));
         ExamKey key = mc.loadExamKey("D:\\Input\\CorrectAnswers.dat", testExam.getName());
         testExam.addKey(key);
-        testExam.markStudentAnswers();
-        ArrayList<StudentExam> studentAnswers = testExam.getStudentAnswers();
+        testExam.markAllStudentAnswers();
+        List<StudentExam> studentAnswers = testExam.getStudentAnswers();
         for (StudentExam e : studentAnswers)
         {
             System.out.println(e.getStudent().getId() + "\t" + e.getStudent().getName() + "\tMark: " + e.getMark());
