@@ -1,9 +1,11 @@
 // DT265 - OOSD2 Java Project
 // By Andrew Zacharias - D14127051
 // 23 / 11 / 2015
+package examgrader.model;
 
 import java.util.*;
 import java.io.*;
+
 
 public class Student extends Person implements Comparable<Student>, Serializable
 {
@@ -64,7 +66,7 @@ public class Student extends Person implements Comparable<Student>, Serializable
 
     public void deleteExam(Exam e)
     {
-        // Use list iterator to safely remove StudentExams with Exam e.
+        // Use list iterator to safely remove StudentExams with examgrader.model.Exam e.
         for (Iterator<StudentExam> iterator = exams.iterator(); iterator.hasNext();)
         {
             StudentExam se = iterator.next();

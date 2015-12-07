@@ -1,9 +1,13 @@
 // DT265 - OOSD2 Java Project
 // By Andrew Zacharias - D14127051
 // 23 / 11 / 2015
+package examgrader.gui;
 
 import javax.swing.*;
 import java.awt.*;
+
+import examgrader.controllers.MainController;
+import examgrader.model.*;
 
 public class ExamGraderGUI extends JFrame
 {
@@ -43,6 +47,7 @@ public class ExamGraderGUI extends JFrame
         gui.setTitle("Exam Grader");
         gui.setLocationRelativeTo(null);
         gui.setDefaultCloseOperation(EXIT_ON_CLOSE);
+        // Add a new thread that saves data on exit.
         Runtime.getRuntime().addShutdownHook(new Thread(gui.mc::saveState, "ExamGraderSaveState"));
     }
 
@@ -56,17 +61,18 @@ public class ExamGraderGUI extends JFrame
     public void loadTestData()
     {
         // Fill in some data to test GUI with
+        String inputDirectory = System.getProperty("user.dir") + "\\sample-input\\";
         Exam testExam = new Exam("Exam 1");
         mc.addExam(testExam);
-        testExam.addStudentAnswers(mc.loadStudentExams("D:\\Input\\StudentAnswers1.dat", testExam));
-        ExamKey key = mc.loadExamKey("D:\\Input\\CorrectAnswers1.dat", testExam.getName());
+        testExam.addStudentAnswers(mc.loadStudentExams(inputDirectory + "StudentAnswers1.dat", testExam));
+        ExamKey key = mc.loadExamKey(inputDirectory + "CorrectAnswers1.dat", testExam.getName());
         testExam.addKey(key);
         testExam.markAllStudentAnswers();
 
         Exam textExam2 = new Exam("Exam 2");
         mc.addExam(textExam2);
-        textExam2.addStudentAnswers(mc.loadStudentExams("D:\\Input\\StudentAnswers2.dat", textExam2));
-        ExamKey key2 = mc.loadExamKey("D:\\Input\\CorrectAnswers2.dat", textExam2.getName());
+        textExam2.addStudentAnswers(mc.loadStudentExams(inputDirectory + "StudentAnswers2.dat", textExam2));
+        ExamKey key2 = mc.loadExamKey(inputDirectory + "CorrectAnswers2.dat", textExam2.getName());
         textExam2.addKey(key2);
         textExam2.markAllStudentAnswers();
     }

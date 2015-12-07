@@ -1,12 +1,16 @@
 // DT265 - OOSD2 Java Project
 // By Andrew Zacharias - D14127051
 // 23 / 11 / 2015
+package examgrader.gui;
 
 import javax.swing.*;
+import javax.swing.filechooser.FileNameExtensionFilter;
 import java.awt.*;
 
-// A small JPanel that has a text field for entering a file path, as well as a button that opens a file dialog to select it
-// Designed to be used in JOptionPane dialogs for entering information.
+/**
+ *  A small JPanel that has a text field for entering a file path, as well as a button that opens a file dialog to select it
+ *  Designed to be used in JOptionPane dialogs for entering information.
+ */
 public class FileChooserPanel extends JPanel
 {
     private String type; // either "open" or "save"
@@ -46,10 +50,16 @@ public class FileChooserPanel extends JPanel
     private void addFileSaveAction()
     {
         selectButton.addActionListener(e -> {
+            fileChooser.setFileFilter(new FileNameExtensionFilter("Comma separated values (csv)", "csv"));
             int result = fileChooser.showSaveDialog(selectButton);
             if (result == JFileChooser.APPROVE_OPTION)
             {
-                fileText.setText(fileChooser.getSelectedFile().getAbsolutePath());
+                String fileName = fileChooser.getSelectedFile().getAbsolutePath();
+                if (!fileName.endsWith(".csv")) // Add correct file extension if it's not already there.
+                {
+                    fileName += ".csv";
+                }
+                fileText.setText(fileName);
             }
         });
     }

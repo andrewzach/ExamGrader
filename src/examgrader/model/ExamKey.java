@@ -1,8 +1,10 @@
+// DT265 - OOSD2 Java Project
+// By Andrew Zacharias - D14127051
+// 23 / 11 / 2015
+package examgrader.model;
+
 import java.io.Serializable;
 
-/**
- * Created by Andrew on 11/9/2015.
- */
 public class ExamKey implements Serializable
 {
     private String examName;

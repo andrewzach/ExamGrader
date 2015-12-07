@@ -1,12 +1,16 @@
 // DT265 - OOSD2 Java Project
 // By Andrew Zacharias - D14127051
 // 23 / 11 / 2015
+package examgrader.gui;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionListener;
 import java.util.*;
 import java.util.List;
+
+import examgrader.controllers.MainController;
+import examgrader.model.*;
 
 // Students tab on GUI
 public class StudentsPanel extends JPanel
@@ -43,7 +47,7 @@ public class StudentsPanel extends JPanel
         controlsPanel = new JPanel();
         studentList = new JList<>(studentListModel);
         studentScrollPane = new JScrollPane(studentList);
-        studentListLabels = new JLabel(String.format("%-11s %-15s %-10s", "First", "Last", "ID"));
+        studentListLabels = new JLabel(String.format("%-13s %-15s %-12s", "First", "Last", "ID"));
         addStudent = new JButton("Add Student");
         delStudent = new JButton("Delete Student");
         search = new JButton("Search");

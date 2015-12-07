@@ -1,6 +1,7 @@
 // DT265 - OOSD2 Java Project
 // By Andrew Zacharias - D14127051
 // 23 / 11 / 2015
+package examgrader.gui;
 
 import javax.swing.*;
 import javax.swing.border.CompoundBorder;
@@ -9,7 +10,12 @@ import java.util.Collections;
 import java.util.List;
 import java.util.ArrayList;
 
-// Panel at the bottom of the GUI displaying JList of exam results.
+import examgrader.controllers.MainController;
+import examgrader.model.*;
+
+/**
+ * Panel at the bottom of the GUI displaying JList of exam results.
+ */
 public class ResultsView extends JPanel
 {
     private JScrollPane resultsListPane;
@@ -33,7 +39,7 @@ public class ResultsView extends JPanel
         resultsLabels = new JLabel(String.format("%-13s %-15s %-12s %-15s %-5s    %-5s    %-3s", "First", "Last", "ID", "Exam Name", "Score", "Total", " % " ));
         buttonsPanel = new JPanel();
         viewAnswers = new JButton("View Answers");
-        export = new JButton("Export...");
+        export = new JButton("Export to file...");
 
         resultsList.setFont(ExamGraderGUI.monospaced);
         resultsLabels.setFont(ExamGraderGUI.monospacedBold);
@@ -68,8 +74,9 @@ public class ResultsView extends JPanel
     public void addButtonActions()
     {
         viewAnswers.addActionListener(e -> {
-            JPanel dialog = new JPanel(new BorderLayout(5,5));
             StudentExam selected = resultsList.getSelectedValue();
+            if (selected == null) return; // if nothing selected, don't do anything
+            JPanel dialog = new JPanel(new BorderLayout(5,5));
             int[] answers = selected.getAnswers();
             int[] correctAnswers = selected.getExam().getKey().getAnswers();
             JPanel labelsPanel = new JPanel(new GridLayout(3,1,10,10));
@@ -109,7 +116,8 @@ public class ResultsView extends JPanel
             FileChooserPanel outFile = new FileChooserPanel("save");
             dialog.add(new JLabel("Output File"), BorderLayout.WEST);
             dialog.add(outFile, BorderLayout.CENTER);
-            dialog.setPreferredSize(new Dimension(400,30));
+            dialog.setPreferredSize(new Dimension(400, 30));
+
 
             int success = JOptionPane.showConfirmDialog(export, dialog, "Select Export File", JOptionPane.OK_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE);
             if (success == JOptionPane.OK_OPTION)

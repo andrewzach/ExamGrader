@@ -1,6 +1,7 @@
 // DT265 - OOSD2 Java Project
 // By Andrew Zacharias - D14127051
 // 23 / 11 / 2015
+package examgrader.model;
 
 import java.util.*;
 import java.io.*;
@@ -69,7 +70,7 @@ public class Exam implements Serializable
 
     public void removeStudent(Student s)
     {
-        // Use list iterator to safely remove StudentExams belonging to Student s.
+        // Use list iterator to safely remove StudentExams belonging to examgrader.model.Student s.
         for (Iterator<StudentExam> iterator = studentAnswers.iterator(); iterator.hasNext();)
         {
             StudentExam se = iterator.next();
@@ -115,7 +116,7 @@ public class Exam implements Serializable
         }
     }
 
-    // Calculates grade for StudentExam. Gives 1 point for correct answers, subtracts penalty for incorrect
+    // Calculates grade for examgrader.model.StudentExam. Gives 1 point for correct answers, subtracts penalty for incorrect
     // No change for blank answers. Final grade is rounded up to nearest whole number.
     // Return -1 if error marking exam.
     private double calcGrade(StudentExam s)
@@ -125,7 +126,7 @@ public class Exam implements Serializable
         double grade = 0;
         if (sAnswers.length != kAnswers.length)
         {
-            return StudentExam.MARKING_ERROR; // Exam lengths don't match
+            return StudentExam.MARKING_ERROR; // examgrader.model.Exam lengths don't match
         }
         else
         {

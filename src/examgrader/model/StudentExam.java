@@ -1,9 +1,14 @@
 // DT265 - OOSD2 Java Project
 // By Andrew Zacharias - D14127051
 // 23 / 11 / 2015
+package examgrader.model;
 
 import java.io.Serializable;
 
+/**
+ * Represents a student's answers to an exam. Stores a reference to the appropriate Student and Exam objects.
+ * Also stores the student's mark for the exam.
+ */
 public class StudentExam implements Serializable
 {
     private Exam exam;
@@ -51,6 +56,11 @@ public class StudentExam implements Serializable
         else if (mark == MARKING_ERROR) { return MARKING_ERROR; }     // return MARKING_ERROR if error in marking exam
         else { return (int)Math.round((mark/exam.length())*100); }
     }
+
+    /**
+     * Returns a formatted string designed for output in a JList. Format is %-15s %5s    %5d    %3d.
+     * @return
+     */
     public String toString()
     {
         String studentExamString;
@@ -69,7 +79,11 @@ public class StudentExam implements Serializable
         return studentExamString;
     }
 
-    // Tests for equality. Implemented for comparison in List contains() method to prevent duplicates.
+    /**
+     * Tests for equality. Implemented for comparison in List contains() method to prevent duplicates.
+     * @param other Object to compare to
+     * @return True if both are StudentExams with the same student name and exam name, false otherwise.
+     */
     public boolean equals(Object other)
     {
         boolean equals = false;

@@ -1,10 +1,14 @@
 // DT265 - OOSD2 Java Project
 // By Andrew Zacharias - D14127051
 // 23 / 11 / 2015
+package examgrader.gui;
 
 import javax.swing.*;
 import java.awt.*;
 import java.util.ArrayList;
+
+import examgrader.controllers.MainController;
+import examgrader.model.*;
 import java.util.List;
 
 // Exams tab on GUI..
@@ -132,6 +136,10 @@ public class ExamsPanel extends JPanel
                 {
                     JOptionPane.showMessageDialog(parent, "Error parsing answers file", "Error", JOptionPane.ERROR_MESSAGE);
                 }
+                catch (NullPointerException e)
+                {
+                    JOptionPane.showMessageDialog(parent, "Please select an exam to add answers to.", "Error", JOptionPane.ERROR_MESSAGE);
+                }
             }
         });
 
@@ -185,11 +193,6 @@ public class ExamsPanel extends JPanel
                 {
                     JOptionPane.showMessageDialog(parent, "Error adding exam: " + e.getMessage());
                 }
-//                catch (NullPointerException e)
-//                {
-//                    System.out.println(e.toString());
-//                    JOptionPane.showMessageDialog(parent, "Error parsing exam files", "Error", JOptionPane.ERROR_MESSAGE);
-//                }
             }
         });
 
@@ -223,6 +226,10 @@ public class ExamsPanel extends JPanel
                 catch (ArrayIndexOutOfBoundsException | IllegalArgumentException e)
                 {
                     JOptionPane.showMessageDialog(parent, "Error parsing answers file", "Error", JOptionPane.ERROR_MESSAGE);
+                }
+                catch (NullPointerException e)
+                {
+                    JOptionPane.showMessageDialog(parent, "Please select an exam to add answers to.", "Error", JOptionPane.ERROR_MESSAGE);
                 }
             }
         });

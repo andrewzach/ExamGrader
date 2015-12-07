@@ -1,7 +1,7 @@
-/**
- * Created by Andrew on 11/22/2015.
- */
-public abstract class  Person
+package examgrader.model;
+
+// Only here to show inheritance and abstract class usage
+public abstract class Person
 {
     private String lastName;
     private String firstName;

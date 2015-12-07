@@ -1,10 +1,18 @@
 // DT265 - OOSD2 Java Project
 // By Andrew Zacharias - D14127051
 // 23 / 11 / 2015
+package examgrader.controllers;
+
+import examgrader.model.*;
 
 import java.io.*;
 import java.util.*;
 
+/**
+ * Controls all interaction between ExamGrader's gui and model.
+ * Stores all data as a List of Students and List of Exams and contains methods for interacting with them.
+ * Also contains methods for file input and output.
+ */
 public class MainController
 {
     private List<Student> students;
