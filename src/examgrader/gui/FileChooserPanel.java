@@ -18,6 +18,10 @@ public class FileChooserPanel extends JPanel
     private JButton selectButton;
     private JFileChooser fileChooser;
 
+    /**
+     * Initializes the FileChooserPanel
+     * @param type "save" or "open", depending on whether panel is used to save or open a file.
+     */
     public FileChooserPanel(String type)
     {
         this.type = type;
@@ -37,6 +41,7 @@ public class FileChooserPanel extends JPanel
         }
     }
 
+    // Adds action to button bringing up file open dialog
     private void addFileOpenAction()
     {
         selectButton.addActionListener(e -> {
@@ -47,6 +52,7 @@ public class FileChooserPanel extends JPanel
         });
     }
 
+    // Adds action to button bringing up file save dialog
     private void addFileSaveAction()
     {
         selectButton.addActionListener(e -> {
@@ -64,6 +70,7 @@ public class FileChooserPanel extends JPanel
         });
     }
 
+    /** @return absolute file path + filename for the selected file, or whatever is in the JTextField */
     public String getPath()
     {
         return fileText.getText();

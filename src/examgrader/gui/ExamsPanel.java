@@ -12,6 +12,13 @@ import examgrader.model.*;
 import java.util.List;
 
 // Exams tab on GUI..
+
+/**
+ * A JPanel representing the Exams tab on the GUI.
+ * Displays a JList of all Exams in the system.
+ * Results for selected Exam are displayed in a ResultsView at the buttom.
+ * Contains buttons to: Add Exam, Delete Exam, Add Results, Add Key, Clear All data
+ */
 public class ExamsPanel extends JPanel
 {
     private ExamGraderGUI parent;
@@ -33,6 +40,13 @@ public class ExamsPanel extends JPanel
 
     private ResultsView resultsView;
 
+    /** Initializes the ExamPanel
+     * Creates all GUI components and arranges their layout.
+     * Adds action listeners to all buttons.
+     * Fills in data from the MainController mc provided.
+     * @param parent Main GUI Frame
+     * @param mc MainController used to retrieve data and perform all actions on the model
+     */
     public ExamsPanel(ExamGraderGUI parent, MainController mc)
     {
         this.parent = parent;
@@ -87,11 +101,15 @@ public class ExamsPanel extends JPanel
         add(buttonsPanel, BorderLayout.EAST);
         add(resultsView, BorderLayout.SOUTH);
     }
+
+    // Adds listeners to all buttons to perform the logic for each one
+    // Lambda expressions are used for each listener
     private void addButtonActions()
     {
         // View Results based on selection in Exam JList
         examList.addListSelectionListener(lse -> {
-            if (!lse.getValueIsAdjusting()) {
+            if (!lse.getValueIsAdjusting()) //Don't bother updating list if the selection is not finalized
+            {
                 List<StudentExam> studentExams = new ArrayList<>();
                 for (Exam e : examList.getSelectedValuesList())
                 {
@@ -102,9 +120,11 @@ public class ExamsPanel extends JPanel
             }
         });
 
-        // Delete Exam
+        // Delete Exam - deletes selected exam
         delExam.addActionListener(ae -> {
-            for (Exam e : examList.getSelectedValuesList()) {
+            for (Exam e : examList.getSelectedValuesList())
+            {
+                // Display confirmation for each exam before deleting
                 int confirmation = JOptionPane.showConfirmDialog(null, "Are you sure you want to delete exam " + e.getName() + "?");
                 if (confirmation == JOptionPane.YES_OPTION) {
                     mc.deleteExam(e);
@@ -113,8 +133,9 @@ public class ExamsPanel extends JPanel
             parent.updateData();
         });
 
-        // Add Results to existing exam
+        // Add Results - Prompts user for a student answers file to add to selected exam
         addResults.addActionListener(ae -> {
+            // Create the "Add Answers" dialog panel
             JPanel dialogPanel = new JPanel(new BorderLayout());
             FileChooserPanel answersFile = new FileChooserPanel("open");
             answersFile.setBorder(BorderFactory.createEmptyBorder(5,5,5,5));
@@ -125,7 +146,8 @@ public class ExamsPanel extends JPanel
             int result = JOptionPane.showConfirmDialog(parent, dialogPanel, "Add Answers", JOptionPane.OK_CANCEL_OPTION);
             if (result == JOptionPane.OK_OPTION)
             {
-                try {
+                try
+                {
                     Exam selectedExam = examList.getSelectedValue();
                     List<StudentExam> studentAnswers = mc.loadStudentExams(answersFile.getPath(), selectedExam);
                     selectedExam.addStudentAnswers(studentAnswers);
@@ -143,7 +165,7 @@ public class ExamsPanel extends JPanel
             }
         });
 
-        // Add Exam
+        // Add Exam - prompts user for information on new Exam to create and add
         addExam.addActionListener(ae -> {
             // Create dialog to get user input for new Exam
             JPanel dialogPanel = new JPanel(new BorderLayout());
@@ -175,12 +197,12 @@ public class ExamsPanel extends JPanel
                 try
                 {
                     Exam newExam = new Exam(name.getText(), Double.parseDouble(penalty.getText()));
-                    if (!keyFile.getPath().equals(""))
+                    if (!keyFile.getPath().equals("")) // if a key file is provided
                     {
                         ExamKey key = mc.loadExamKey(keyFile.getPath(), newExam.getName());
                         newExam.addKey(key);
                     }
-                    if (!answersFile.getPath().equals(""))
+                    if (!answersFile.getPath().equals(""))  // if student answers file is provided
                     {
                         List<StudentExam>studentAnswers = mc.loadStudentExams(answersFile.getPath(), newExam);
                         newExam.addStudentAnswers(studentAnswers);
@@ -196,6 +218,7 @@ public class ExamsPanel extends JPanel
             }
         });
 
+        // Clear All - clears all program data
         clearAll.addActionListener(ae -> {
             int confirmation = JOptionPane.showConfirmDialog(null, "Are you sure you want to clear all Exam and Student data?");
             if (confirmation == JOptionPane.YES_OPTION)
@@ -205,6 +228,7 @@ public class ExamsPanel extends JPanel
             }
         });
 
+        // Add Key - adds an ExamKey from a file to the selected Exam
         addKey.addActionListener(ae -> {
             JPanel dialogPanel = new JPanel(new BorderLayout());
             FileChooserPanel answersFile = new FileChooserPanel("open");
@@ -235,7 +259,7 @@ public class ExamsPanel extends JPanel
         });
     }
 
-    // Update the Exam JList with most recent data
+    /** Update the Exam JList with most recent data. Clears existing list and gets the most updated one from the MainController */
     public void updateExamsList()
     {
         examListModel.clear();

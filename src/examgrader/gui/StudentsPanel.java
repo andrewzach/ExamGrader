@@ -12,7 +12,13 @@ import java.util.List;
 import examgrader.controllers.MainController;
 import examgrader.model.*;
 
-// Students tab on GUI
+
+/**
+ * A JPanel representing the Students tab on the GUI
+ * Displays a JList of all Students in the system.
+ * Results for selected Students are displayed in a ResultsView at the bottom
+ * Contains buttons to: Add Student, Delete Student, Search, and Clear search
+ */
 public class StudentsPanel extends JPanel
 {
     private ExamGraderGUI parent;
@@ -36,6 +42,13 @@ public class StudentsPanel extends JPanel
 
     private ResultsView resultsView;
 
+    /** Initializes the StudentPanel
+     * Creates all GUI components and arranges their layout.
+     * Adds action listeners to all buttons.
+     * Fills in data from the MainController mc provided.
+     * @param parent Main GUI Frame
+     * @param mc MainController used to retrieve data and perform all actions on the model
+     */
     public StudentsPanel(ExamGraderGUI parent, MainController mc)
     {
         this.parent = parent;
@@ -65,6 +78,7 @@ public class StudentsPanel extends JPanel
         updateStudentList();
     }
 
+    /** Clears the existing student list displayed and retrieves an updated one from the MainController */
     public void updateStudentList()
     {
         studentListModel.clear();
@@ -110,7 +124,10 @@ public class StudentsPanel extends JPanel
         add(controlsPanel, BorderLayout.EAST);
         add(resultsView, BorderLayout.SOUTH);
     }
+
+    // Adds actions to all buttons
     private void addButtonActions() {
+        // Add Student - prompt user for information on a new Student and adds it to the system
         addStudent.addActionListener(ae -> {
             JPanel dialog = new JPanel(new BorderLayout(5,5));
             JPanel labels = new JPanel(new GridLayout(3,1,5,5));
@@ -144,6 +161,7 @@ public class StudentsPanel extends JPanel
             }
         });
 
+        // Delete Student - delete selected student and all data associated with them
         delStudent.addActionListener(ae -> {
             for (Student s : studentList.getSelectedValuesList()) {
                 int confirmation = JOptionPane.showConfirmDialog(null, "Are you sure you want to delete student " + s.getName() + "?");
@@ -154,6 +172,7 @@ public class StudentsPanel extends JPanel
             parent.updateData();
         });
 
+        // View Results for selected Students in the JList.
         studentList.addListSelectionListener(lse -> {
             if (!lse.getValueIsAdjusting()) {
                 List<StudentExam> studentExams = new ArrayList<>();
@@ -166,6 +185,7 @@ public class StudentsPanel extends JPanel
             }
         });
 
+        // Search - searches for student based on the string entered. Searches all fields
         ActionListener searchAction = e -> {
             String searchTerm = searchField.getText();
             if (!searchTerm.equals("")) {
@@ -179,9 +199,11 @@ public class StudentsPanel extends JPanel
             else { updateStudentList(); }
         };
 
+        // Add the search action to both the button and the field (when pressing enter)
         search.addActionListener(searchAction);
         searchField.addActionListener(searchAction);
 
+        // Clear - clears the search field.
         clear.addActionListener(e -> {
             searchField.setText("");
             updateStudentList();

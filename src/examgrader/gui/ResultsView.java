@@ -15,6 +15,8 @@ import examgrader.model.*;
 
 /**
  * Panel at the bottom of the GUI displaying JList of exam results.
+ * Used in both the StudentsPanel and the ExamsPanel to display results.
+ * Contains buttons to: View Answers (as a dialog) and Export to File.
  */
 public class ResultsView extends JPanel
 {
@@ -28,6 +30,12 @@ public class ResultsView extends JPanel
     private JButton export;
     private MainController mc;
 
+    /**
+     * Initializes the ResultsView
+     * Creates all GUI components and arranges their layout.
+     * Adds action listeners to all buttons.
+     * @param mc MainController used to retrieve data and perform all actions on the model
+     */
     public ResultsView(MainController mc)
     {
         this.mc = mc;
@@ -48,6 +56,10 @@ public class ResultsView extends JPanel
         addButtonActions();
     }
 
+    /**
+     * Updates the JList with the list of StudentExams provided.
+     * @param studentExams A list of StudentExams to display
+     */
     public void updateView(List<StudentExam> studentExams)
     {
         resultsListModel.clear();
@@ -59,7 +71,8 @@ public class ResultsView extends JPanel
         }
     }
 
-    public void gridComponents()
+    // Handles all placement of components in the GUI.
+    private void gridComponents()
     {
         buttonsPanel.add(viewAnswers);
         buttonsPanel.add(export);
@@ -71,8 +84,10 @@ public class ResultsView extends JPanel
         add(buttonsPanel, BorderLayout.SOUTH);
     }
 
-    public void addButtonActions()
+    // Adds action listeners to all buttons
+    private void addButtonActions()
     {
+        // View Answers - view answers for selected StudentExam as a dialog comparing them to the correct answers
         viewAnswers.addActionListener(e -> {
             StudentExam selected = resultsList.getSelectedValue();
             if (selected == null) return; // if nothing selected, don't do anything
@@ -111,13 +126,13 @@ public class ResultsView extends JPanel
             JOptionPane.showMessageDialog(viewAnswers, dialog, selected.getStudent().getName() + "'s Answers", JOptionPane.INFORMATION_MESSAGE);
         });
 
+        // Export to file... Exports all StudentExams in the ResultsView to a CSV file, selected in a file dialog.
         export.addActionListener(ae -> {
             JPanel dialog = new JPanel(new BorderLayout(5,5));
             FileChooserPanel outFile = new FileChooserPanel("save");
             dialog.add(new JLabel("Output File"), BorderLayout.WEST);
             dialog.add(outFile, BorderLayout.CENTER);
             dialog.setPreferredSize(new Dimension(400, 30));
-
 
             int success = JOptionPane.showConfirmDialog(export, dialog, "Select Export File", JOptionPane.OK_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE);
             if (success == JOptionPane.OK_OPTION)

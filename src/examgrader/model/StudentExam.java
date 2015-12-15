@@ -11,15 +11,23 @@ import java.io.Serializable;
  */
 public class StudentExam implements Serializable
 {
+
     private Exam exam;
     private int[] answers;
     private Student student;
     private double mark;
 
-    // constants used to check for marking errors and if an exam hasn't been marked yet
+    /** Constant value for exam's mark representing an exam that has not been marked yet */
     public static final int NOT_MARKED = -2;
+    /** Constant value for exam's mark representing an error has occurred when marking the exam */
     public static final int MARKING_ERROR = -1;
 
+    /**
+     *
+     * @param exam The Exam object associated with this StudentExam
+     * @param answers int array of student's answers to the exam
+     * @param student Student object associated with this StudentExam
+     */
     public StudentExam(Exam exam, int[] answers, Student student)
     {
         this.exam = exam;
@@ -28,6 +36,10 @@ public class StudentExam implements Serializable
         this.mark = NOT_MARKED; // NOT_MARKED if not marked yet
     }
 
+    /**
+     * Returns the array of answers the student gave for the exam. Blank answers represented as 0.
+     * @return an int array representing all answers given by the student for the exam.
+     */
     public int[] getAnswers() {
         return answers;
     }
@@ -36,20 +48,36 @@ public class StudentExam implements Serializable
         return exam;
     }
 
+    /**
+     * Returns the Student object associated with this exam
+     * @return the Student object associated with this exam
+     */
     public Student getStudent() {
         return student;
     }
 
+    /**
+     * Returns the exam mark as a double
+     * @return exam mark
+     */
     public double getMark()
     {
         return mark;
     }
 
+    /**
+     * Sets mark to the value specified
+     * @param mark New mark value
+     */
     public void setMark(double mark)
     {
         this.mark = mark;
     }
 
+    /**
+     * Calculates the percentage score on an exam (out of 100) and returns it
+     * @return an int representing the percentage score of an exam
+     */
     public int getPercentage()
     {
         if (mark == NOT_MARKED) { return NOT_MARKED; }    // return NOT_MARKED if not marked yet
@@ -59,7 +87,7 @@ public class StudentExam implements Serializable
 
     /**
      * Returns a formatted string designed for output in a JList. Format is %-15s %5s    %5d    %3d.
-     * @return
+     * @return a formatted string designed for output in a JList.
      */
     public String toString()
     {

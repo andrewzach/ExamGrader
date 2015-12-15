@@ -9,7 +9,7 @@ import examgrader.model.StudentExam;
 
 import java.util.List;
 
-// Used to test model before developing GUI. No longer used.
+/** Used to test model before developing GUI. No longer used. */
 class ConsoleUI
 {
     private static MainController mc;

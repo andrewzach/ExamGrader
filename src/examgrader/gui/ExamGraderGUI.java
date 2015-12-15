@@ -9,6 +9,11 @@ import java.awt.*;
 import examgrader.controllers.MainController;
 import examgrader.model.*;
 
+/**
+ * Main entry point for the ExamGrader app.
+ * Extends JFrame and creates the main window for the application.
+ * Main interface is contained in a JTabbedPain, with two tabs: ExamsPanel and StudentsPanel
+ */
 public class ExamGraderGUI extends JFrame
 {
     public static Font monospaced = new Font(Font.MONOSPACED, Font.PLAIN, 16);
@@ -19,6 +24,9 @@ public class ExamGraderGUI extends JFrame
     private ExamsPanel examsPanel;
     private StudentsPanel studentsPanel;
 
+    /**
+     * Initializes ExamGrader's GUI. Creates a MainController, the JTabbedPane, and all panels.
+     */
     public ExamGraderGUI()
     {
         mc = new MainController();
@@ -39,6 +47,11 @@ public class ExamGraderGUI extends JFrame
         add(tabbedPane, BorderLayout.CENTER);
     }
 
+    /**
+     * Main program entry point. Creates the GUI and sets the window size and name.
+     * Also adds a ShutdownHook to save program data on exit.
+     * @param args not currently used
+     */
     public static void main(String[] args)
     {
         ExamGraderGUI gui = new ExamGraderGUI();
@@ -51,13 +64,14 @@ public class ExamGraderGUI extends JFrame
         Runtime.getRuntime().addShutdownHook(new Thread(gui.mc::saveState, "ExamGraderSaveState"));
     }
 
-    // Update JList data on both tabs
+    /** Updates the data in the JLists on both the ExamsPanel and the StudentsPanel. */
     public void updateData()
     {
         examsPanel.updateExamsList();
         studentsPanel.updateStudentList();
     }
 
+    /** Loads in some sample data from pre-defined sample files. Used to test program features. Not used in release */
     public void loadTestData()
     {
         // Fill in some data to test GUI with

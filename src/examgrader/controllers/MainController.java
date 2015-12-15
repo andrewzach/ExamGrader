@@ -19,6 +19,7 @@ public class MainController
     private List<Exam> exams;
     private String saveData;
 
+    /** Initializes the list of Students and list of Exams. Also detects directory for existing save data. */
     public MainController()
     {
         students = new ArrayList<>();
@@ -26,15 +27,23 @@ public class MainController
         saveData = System.getProperty("user.dir") + "\\save-data\\savestate.ser";
     }
 
+    /** @return a list of all Students stored */
     public List<Student> getStudents() {
         return students;
     }
 
+    /** @return a list of all Exams stored */
     public List<Exam> getExams() {
         return exams;
     }
 
     // Get Student by id. Return null if not found
+
+    /**
+     * Returns a student matching the specified student ID. Returns null if not found.
+     * @param id Student id to match
+     * @return a student matching the specified student ID, null if not found.
+     */
     public Student getStudent(String id)
     {
         for (Student s : students)
@@ -47,7 +56,11 @@ public class MainController
         return null;
     }
 
-    // Get Exam by name. Return null if not found
+    /**
+     * Returns an Exam matching the specified Exam name. Returns null if not found.
+     * @param name Exam name to match
+     * @return an Exam matching the specified Exam name, null if not found.
+     */
     public Exam getExam(String name)
     {
         for (Exam e : exams)
@@ -60,6 +73,7 @@ public class MainController
         return null;
     }
 
+    /** Adds a new Student to the controller's Student list. Checks to see if student already is in the list and does not add if so */
     public void addStudent(Student s)
     {
         if (!students.contains(s))
@@ -68,6 +82,11 @@ public class MainController
         }
     }
 
+    /**
+     * Removes a Student from the program, including any data associated with them.
+     * Deletes their answers to all Exams and then removes them from the controller's list of Students.
+      * @param s Student to be removed
+     */
     public void deleteStudent(Student s)
     {
         for (Exam exam : exams) // Remove student's exam answers from all exams
@@ -77,11 +96,17 @@ public class MainController
         students.remove(s);
     }
 
+    /** @param e New Exam to be added to the controller's list of exams */
     public void addExam(Exam e)
     {
         exams.add(e);
     }
 
+    /**
+     * Removes an Exam from the program, including any data associated with it.
+     * Calls the deleteExam(e) method on all Students to remove the exam from each one of them as well.
+     * @param e Exam to be deleted
+     */
     public void deleteExam(Exam e)
     {
         for (Student s : students)
@@ -94,6 +119,15 @@ public class MainController
     // FILE INPUT/OUTPUT
 
     // Read in StudentExams from a file, return them as a List
+
+    /**
+     * Reads in StudentExams from a file and returns them as a List.
+     * Creates new Student objects for those that don't exist in the program yet and adds them to the controller's list of Students.
+     * @param filename Absolute path + filename for the file containing the StudentExams to be added
+     * @param exam Exam associated with the new StudentExams
+     * @throws IllegalArgumentException if file can't be found or an error occurs when parsing it
+     * @return List of StudentExams created from the given file
+     */
     public List<StudentExam> loadStudentExams(String filename, Exam exam)
     {
         List<StudentExam> studentAnswers = new ArrayList<>();
@@ -129,6 +163,13 @@ public class MainController
         return studentAnswers;
     }
 
+    /**
+     * Writes a list of StudentExams to a file. File is formatted as a comma-separated values (CSV) file.
+     * Format is: Exam Name, First, Last, Id, Score, Questions
+     * Overwrites file if it already exists.
+     * @param filename Absolute path + filename of the file to be created.
+     * @param results List of StudentExams to write to the file.
+     */
     public void writeResultsFile(String filename, List<StudentExam> results)
     {
         try
@@ -153,8 +194,14 @@ public class MainController
             System.out.println(e);
         }
     }
-
-    // Read ExamKey from a file
+    /**
+     * Reads an ExamKey in from the specified file.
+     * Input file is formatted as a list of answers, separated by commas.
+     * @param filename Absolute path + filename of the file to be read
+     * @param examName Name of the exam associated with the ExamKey
+     * @return a new ExamKey object from the file.
+     * @throws IllegalArgumentException if file can't be found or an error occurs when parsing it
+     */
     public ExamKey loadExamKey(String filename, String examName)
     {
         try {
@@ -172,12 +219,17 @@ public class MainController
         }
     }
 
+    /** Clears all data stored in the program. Creates new blank lists for Exams and Students */
     public void clearAllData()
     {
         exams = new ArrayList<>();
         students = new ArrayList<>();
     }
 
+    /**
+     * Saves all program data to a file (savestate.ser) in the save-data folder of the program's main directory.
+     * The controller's list of Students and list of Exams are serialized and written to a binary file that can be loaded later.
+     */
     public void saveState()
     {
         try
@@ -198,6 +250,10 @@ public class MainController
         }
     }
 
+    /**
+     * Checks for save data in the file save-data\savestate.ser and loads it if it exists.
+     * Loads a list of Exams and a list of Students for the controller.
+     */
     public void loadSavedState()
     {
         try
